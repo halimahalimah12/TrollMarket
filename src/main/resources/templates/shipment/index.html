@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="~{layout :: head('Shipment')}">
+</head>
+
+<body class="index-page">
+
+<header th:replace="~{layout :: navbar}">
+</header>
+
+<main class="main">
+    <section id="services" class="services section">
+
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Shipment</h2>
+        </div>
+
+        <div class="container">
+
+            <div class="row g-5">
+                <div class="service-item item-pink position-relative">
+                    <div class="col-lg-12" data-aos="fade-up" data-aos-delay="300">
+                        <div class=" alert alert-success alert-dismissible fade show success-alert"
+                             role="alert">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+
+                        <button id="btnAddShipment" class="btn btn-outline-primary"
+                                data-bs-toggle="modal" data-bs-target="#upsertShipment">
+                            Add Shipment
+                        </button>
+
+                        <div class="wrapper-table">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Action</th>
+                                    <th scope="col">Name Shipment</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Service</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="shipment : ${shipments}">
+                                    <th scope="row">
+                                        <div class="btn-group" role="group" aria-label="Basic outlined example">
+
+                                            <button class="btn btn-outline-primary btnEdit"
+                                                    data-bs-toggle="modal" data-bs-target="#upsertShipment"
+                                                    th:data-id="${shipment.id}"
+                                                    th:disabled="${shipment.totalOrder !=  0 }">
+                                                Edit
+                                            </button>
+                                            <button class="btn btn-outline-primary btn-delete"
+                                                    data-bs-toggle="modal" data-bs-target="#delete"
+                                                    th:data-id="${shipment.id}"
+                                                    th:disabled="${shipment.totalOrder !=  0 }">
+                                                Delete
+                                            </button>
+
+                                            <button class="btn btn-outline-primary btn-stopService" data-bs-toggle="modal"
+                                                    data-bs-target="#stopService"
+                                                    th:data-id="${shipment.id}"
+                                                    th:disabled="${shipment.isService == 'No'}">
+
+                                                Stop Service
+                                            </button>
+                                        </div>
+
+                                    </th>
+                                    <td th:text="${shipment.name}"></td>
+                                    <td >Rp. <span th:text="${#numbers.formatDecimal(shipment.price,0,'COMMA',2,'POINT')}"></span></td>
+                                    <td th:text="${shipment.isService}"></td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!--        MODAL UPSERT SHIPMENT-->
+        <div class="modal fade" id="upsertShipment" data-bs-backdrop="false" tabindex="-1" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-content formUpsert">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Upsert Shipment</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form>
+                        <div class="modal-body">
+                            <input type="hidden" class="form-control" id="id">
+                            <div class="row mb-3">
+                                <label for="name" class="col-sm-2 col-form-label">Name</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="name">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="price" class="col-sm-2 col-form-label">Price</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="price">
+                                </div>
+                            </div>
+                            <div class="row mb-3" id="checkBoxService">
+                                <legend class="col-form-label col-sm-2 pt-0">Service</legend>
+                                <div class="col-sm-10">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="isService">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary close" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="submit btn btn-primary">Save</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!--        MODAL Delete-->
+        <div class="modal fade" id="delete" tabindex="-1" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog">
+                <form>
+                    <div class="modal-content ">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Delete Shipment</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" class="id">
+                            Apakah anda yakin ingin menghapus Shipment ini?
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary remove">Remove</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        </div>
+        <!--        Modal Stop Service-->
+        <div class="modal fade" id="stopService" tabindex="-1" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Stop Service Shipment</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form>
+                        <div class="modal-body">
+                            <input type="hidden" class="id">
+                            Apakah anda yakin ingin Stop Service Shipment ini?
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary stopService">Stop Service</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+    </section>
+
+
+</main>
+
+<footer th:replace="~{layout :: footer}">
+</footer>
+
+<!-- Scroll Top -->
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+<!-- Preloader -->
+<div id="preloader"></div>
+
+</body>
+
+</html>

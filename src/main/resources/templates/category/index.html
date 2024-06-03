@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="~{layout :: head('Category')}">
+</head>
+
+<body class="index-page">
+
+<header th:replace="~{layout :: navbar}">
+</header>
+
+<main class="main">
+    <section id="services" class="services section">
+
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Category</h2>
+        </div>
+
+        <div class="container">
+
+            <div class="row g-5">
+                <div class="service-item item-pink position-relative">
+                    <div class="col-lg-12" data-aos="fade-up" data-aos-delay="600">
+                        <div th:if="${success}" class="alert alert-success alert-dismissible fade show"
+                             role="alert">
+                            Successfully Added/Update New Category
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <div class="wrapper-search">
+                            <form method="get" action="" class="row row-cols-lg-auto g-3 align-items-center">
+                                <div class="col-12">
+                                    <input type="text" class="form-control" placeholder="Name Category" name="name"
+                                           th:value="${dto.name}">
+                                </div>
+
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <a th:href="@{/categories/insert}">
+                            <button type="button" class="btn btn-outline-primary">Add Category</button>
+                        </a>
+
+                        <div class="wrapper-table">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Action</th>
+                                    <th scope="col">Name Category</th>
+                                    <th scope="col">Description</th>
+                                    <th scope="col">Total Product</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="category : ${categories}">
+                                    <th scope="row">
+                                        <div class="btn-group" role="group" aria-label="Basic outlined example">
+                                            <button type="button" class="btn btn-outline-primary"><a
+                                                    th:href="@{/categories/update/{id} (id=${category.id})}">Edit</a>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary"><a
+                                                    th:href="@{/categories/delete/{id} (id=${category.id})}">Delete </a>
+                                            </button>
+                                        </div>
+
+                                    </th>
+                                    <td th:text="${category.name}"></td>
+                                    <td th:text="${category.description}"></td>
+                                    <td th:text="${category.totalProduct}"></td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+<footer th:replace="~{layout :: footer}">
+</footer>
+
+<!-- Scroll Top -->
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+<!-- Preloader -->
+<div id="preloader"></div>
+
+</body>
+
+</html>

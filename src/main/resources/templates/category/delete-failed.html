@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="~{layout :: head('Delete Failed Category')}">
+</head>
+
+<body class="index-page">
+
+<header th:replace="~{layout :: navbar}">
+</header>
+
+<main class="main">
+    <section id="services" class="services section">
+
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Category</h2>
+            <p><a th:href="@{/categories}"> Categories</a> >  <a th:href="@{/categories/delete/{id} (id=${category.id})">Delete</a></p>
+        </div>
+
+        <div class="container">
+
+            <div class="row g-5">
+                <div class="service-item item-pink position-relative">
+                    <div class="col-lg-12" data-aos="fade-up" data-aos-delay="600">
+
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="bi bi-exclamation-octagon me-1"></i>
+                            Ada <span th:text="${dependencies}"></span> Product yang ada di Category ini.
+                            Anda tidak bisa menghapus category ini.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+    </section>
+
+
+</main>
+
+<footer th:replace="~{layout :: footer}">
+</footer>
+
+<!-- Scroll Top -->
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+<!-- Preloader -->
+<div id="preloader"></div>
+
+</body>
+
+</html>

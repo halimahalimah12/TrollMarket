@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="~{layout :: head('Home')}">
+</head>
+
+<body class="index-page">
+
+<header th:replace="~{layout :: navbar}">
+</header>
+
+<main class="main">
+
+    <section id="hero" class="hero section">
+        <div class="hero-bg">
+            <img th:src="@{/resources/img/hero-bg-light.webp}" alt="">
+        </div>
+        <div class="container text-center">
+            <div class="d-flex flex-column justify-content-center align-items-center">
+                <h1 data-aos="fade-up" class="">Welcome to <span>Troll Market</span></h1>
+                <p data-aos="fade-up" data-aos-delay="100" class="">Market Place <br></p>
+                <img th:src="@{/resources/img/trollmarket.webp}" class="img-fluid hero-img" alt="" data-aos="zoom-out"
+                     data-aos-delay="300">
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer th:replace="~{layout :: footer}">
+</footer>
+
+<!-- Scroll Top -->
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+<!-- Preloader -->
+<div id="preloader"></div>
+
+</body>
+
+</html>

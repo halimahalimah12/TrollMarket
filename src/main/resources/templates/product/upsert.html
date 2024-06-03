@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="~{layout :: head('Product Upsert')}">
+</head>
+
+<body class="index-page">
+
+<header th:replace="~{layout :: navbar}">
+</header>
+
+<main class="main">
+
+    <section id="services" class="services section">
+
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Merchandise</h2>
+            <p><a th:href="@{/merchandise}"> Merchandise</a> >  <a th:href="@{/merchandise/insert}">Upsert</a></p>
+        </div>
+
+        <div class="container d-flex justify-content-center">
+            <div class="row col-lg-5 justify-content-center">
+                <div class="service-item item-pink position-relative">
+                    <div class="col-lg-12 justify-content-center" data-aos="fade-up" data-aos-delay="600">
+                        <div>
+                            <form class="row g-3 needs-validation" th:action="@{/merchandise/upsert}" method="post"
+                                  th:object="${dto}">
+                                <div th:if="${#fields.hasErrors()}"
+                                     class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <ul>
+                                        <li th:each="err : ${#fields.errors()}" th:text="${err}"/>
+                                    </ul>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
+                                </div>
+                                <input type="hidden" th:field="*{id}" name="id">
+                                <div class="col-12">
+                                    <label for="name" class="form-label">Name Product</label>
+                                    <input type="text" class="form-control" name="name" id="name" th:value="*{name}">
+                                </div>
+                                <div class="col-12">
+                                    <label  class="form-label">Category</label>
+                                    <select class="form-select" name="categoryId"  aria-label="Default select example">
+                                        <option th:value="null" >Open this select menu</option>
+                                        <option th:each="dropdown :${categoryDropdown}"
+                                                th:text="${dropdown.text}"
+                                                th:value="${dropdown.value}"
+                                                th:selected="(*{categoryId} == ${dropdown.value})"
+                                        ></option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="description" class="form-label">Description</label>
+                                    <textarea class="form-control" style="height: 100px" name="description" id="description" th:text="*{description}"></textarea>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="price" class="form-label">Price</label>
+                                    <input type="text" name="price" class="form-control" id="price"
+                                           th:field="*{price}">
+                                </div>
+                                <div class="col-12" th:if="*{discountinue == null}">
+                                    <div class="form-check">
+                                        <label class="form-check-label" for="discountinue">
+                                            Discontinue
+                                        </label>
+                                        <input  class="form-check-input" type="checkbox" name="discountinue" id="discountinue" th:value="*{discountinue}" >
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <button class="btn btn-primary w-100" type="submit">Save New Merchandise</button>
+                                </div>
+
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer th:replace="~{layout :: footer}">
+</footer>
+
+<!-- Scroll Top -->
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+<!-- Preloader -->
+<div id="preloader"></div>
+
+</body>
+
+</html>

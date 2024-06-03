@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="~{layout :: head('Home')}">
+</head>
+
+<body class="index-page">
+
+<header th:replace="~{layout :: navbar}">
+</header>
+
+<main class="main">
+
+    <section id="services" class="services section">
+
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Admin</h2>
+        </div>
+
+        <div class="container d-flex justify-content-center">
+            <div class="row col-lg-5 justify-content-center">
+                <div class="service-item item-pink position-relative">
+                    <div class="col-lg-12 justify-content-center" data-aos="fade-up" data-aos-delay="500">
+                        <div th:if="${success}" class="alert alert-success alert-dismissible fade show"
+                             role="alert">
+                            Successfully Added New Admin
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+
+
+                        <div>
+                            <form class="row g-3 needs-validation" th:action="@{/addAdmin}" method="post"
+                                  th:object="${dto}">
+                                <div th:if="${#fields.hasErrors()}"
+                                     class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <ul>
+                                        <li th:each="err : ${#fields.errors()}" th:text="${err}"/>
+                                    </ul>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                            aria-label="Close"></button>
+                                </div>
+                                <div class="col-12">
+                                    <label for="yourUsername" class="form-label">Username</label>
+                                    <div class="input-group has-validation">
+                                        <span class="input-group-text" id="inputGroupPrepend">@</span>
+                                        <input type="text" name="username" class="form-control" id="yourUsername"
+                                               th:field="*{username}">
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="yourPassword" class="form-label">Password</label>
+                                    <input type="password" name="password" class="form-control" id="yourPassword"
+                                           th:field="*{password}">
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="confirmPassword" class="form-label">Confirmation Password</label>
+                                    <input type="password" name="confirmPassword" class="form-control"
+                                           id="confirmPassword" th:field="*{confirmPassword}">
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn btn-primary w-100" type="submit">Save New Admin</button>
+                                </div>
+
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer th:replace="~{layout :: footer}">
+</footer>
+
+<!-- Scroll Top -->
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+<!-- Preloader -->
+<div id="preloader"></div>
+
+</body>
+
+</html>

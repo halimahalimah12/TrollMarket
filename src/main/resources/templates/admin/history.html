@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="~{layout :: head('History')}">
+</head>
+
+<body class="index-page">
+
+<header th:replace="~{layout :: navbar}">
+</header>
+
+<main class="main">
+
+    <section id="services" class="services section">
+
+        <div class="container section-title" data-aos="fade-up">
+            <h2>History</h2>
+        </div>
+
+        <div class="container d-flex justify-content-center">
+            <div class="row col-lg-10 justify-content-center">
+                <div class=" justify-content-center service-item item-pink position-relative ">
+                    <div class="col-lg-12 justify-content-center" data-aos="fade-up" data-aos-delay="300">
+                        <div class=" alert alert-success alert-dismissible fade show success-alert"
+                             role="alert">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+
+                        <div class="wrapper-search">
+                            <form method="get" action="" class="row row-cols-lg-auto g-3 align-items-center" >
+                                <div class="row mb-3">
+                                    <label class="col-sm-4 col-form-label">Buyer</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-select" name="buyer"  aria-label="Default select example">
+                                            <option  th:value="null" >Open this select menu</option>
+                                            <option th:each="dropdown :${buyerDropdown}"
+                                                    th:text="${dropdown.text}"
+                                                    th:value="${dropdown.value}"
+                                                    th:selected="(${dto.buyer} == ${dropdown.value})"
+                                            ></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label class="col-sm-4 col-form-label">Seller</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-select" name="seller"  aria-label="Default select example">
+                                            <option th:value="null" >Open this select menu</option>
+                                            <option th:each="dropdown :${sellerDropdown}"
+                                                    th:text="${dropdown.text}"
+                                                    th:value="${dropdown.value}"
+                                                    th:selected="(${dto.seller} == ${dropdown.value})"
+                                            ></option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary">Search</button>
+                                </div>
+                            </form>
+                        </div>
+
+
+                        <h3>History Transaction </h3>
+
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Seller</th>
+                                <th scope="col">Buyer</th>
+                                <th scope="col">Product</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Shipment</th>
+                                <th scope="col">Total Price</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="order : ${orders}">
+                                <td th:text="${#temporals.format(order.date, 'dd-MM-yyyy')}"></td>
+                                <td th:text="${order.seller}"></td>
+                                <td th:text="${order.buyer}"></td>
+                                <td th:text="${order.product}"></td>
+                                <td th:text="${order.quantity}"></td>
+                                <td th:text="${order.shipment}"></td>
+                                <td >Rp. <span th:text="${#numbers.formatDecimal(order.totalPrice,0,'POINT',2,'POINT')}"></span></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        </div>
+
+
+        <div class="modal fade" id="addBalance" tabindex="-1" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog">
+                <form>
+                    <div class="modal-content formAddBalance">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Add Balance</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" class="id">
+                            <div class="row mb-3">
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" id="balance">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary addBalance">Add</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+    </section>
+
+</main>
+
+<footer th:replace="~{layout :: footer}">
+</footer>
+
+<!-- Scroll Top -->
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+<!-- Preloader -->
+<div id="preloader"></div>
+
+</body>
+
+</html>

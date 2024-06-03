@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:fragment="head(title)">
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title th:text="'Troll Market - '+ ${title}"></title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+          rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link th:href="@{/resources/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/resources/vendor/bootstrap-icons/bootstrap-icons.css}" rel="stylesheet">
+    <link th:href="@{/resources/vendor/aos/aos.css}" rel="stylesheet">
+    <link th:href="@{/resources/vendor/glightbox/css/glightbox.min.css}" rel="stylesheet">
+    <link th:href="@{/resources/vendor/swiper/swiper-bundle.min.css}" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link th:href="@{/resources/css/main.css} " rel="stylesheet">
+
+    <!-- Vendor JS Files -->
+    <script th:src="@{/resources/vendor/bootstrap/js/bootstrap.bundle.min.js}" defer></script>
+    <script th:src="@{/resources/vendor/php-email-form/validate.js}" defer></script>
+    <script th:src="@{/resources/vendor/aos/aos.js}" defer></script>
+    <script th:src="@{/resources/vendor/glightbox/js/glightbox.min.js}" defer></script>
+    <script th:src="@{/resources/vendor/swiper/swiper-bundle.min.js}" defer></script>
+
+    <!-- Main JS File -->
+    <script th:src="@{/resources/js/main.js}" defer></script>
+    <!-- REST API   -->
+    <script th:src="@{/resources/js/restAPI.js}" defer></script>
+    <script th:src="@{/resources/js/jquery-3.6.0.js}"></script>
+    <script th:src="@{/resources/js/jquery-3.6.0.min.js}"></script>
+
+
+</head>
+
+<body class="index-page">
+<header th:fragment="navbar" id="header" class="header  align-items-center fixed-top">
+    <div class="top-header container-fluid container-xl position-relative d-flex align-items-center">
+        <div class="position-relative d-flex align-items-center">
+            <a class="logo d-flex align-items-center me-auto">
+                <h1 class="sitename">Troll Market</h1>
+            </a>
+        </div>
+        <div class="position-relative d-flex align-items-center">
+            <h3 class="d-flex align-items-center">
+                <span th:if="${buyer != null }" th:text="'Welcome '+${buyer.name}"></span>
+                <span th:if="${seller != null }" th:text="'Welcome '+${seller.name}"></span>
+                <span th:if="${admin != null }" th:text="'Welcome '+${admin}"></span>
+            </h3>
+            <form method="post" th:action="@{/logout}">
+                <button class="btn-getstarted">
+                    Log out
+                </button>
+            </form>
+        </div>
+
+    </div>
+
+    <div class="nav container-fluid container-xl position-relative d-flex align-items-center">
+        <nav id="navmenu" class="navmenu">
+            <ul>
+                <li><a th:href="@{/home}" class="">Home</a></li>
+                <th:block sec:authorize="hasAnyAuthority('Seller','Buyer')">
+                    <li><a th:href="@{/profile}">Profile</a></li>
+                </th:block>
+                <th:block sec:authorize="hasAuthority('Buyer')">
+                    <li><a th:href="@{/shop}">Shop</a></li>
+                </th:block>
+                <th:block sec:authorize="hasAuthority('Seller')">
+                    <li><a th:href="@{/merchandise}">Merchandise</a></li>
+                </th:block>
+                <th:block sec:authorize="hasAuthority('Admin')">
+                    <li><a th:href="@{/shipments}">Shipment</a></li>
+                </th:block>
+                <th:block sec:authorize="hasAuthority('Buyer')">
+                <li><a th:href="@{/carts}" class="myCart">My Cart</a></li>
+                </th:block>
+                <th:block sec:authorize="hasAuthority('Admin')">
+                    <li><a th:href="@{/categories}">Category</a></li>
+                    <li><a th:href="@{/admin}">Admin</a></li>
+                    <li><a th:href="@{/history}">History</a></li>
+                </th:block>
+            </ul>
+            <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        </nav>
+    </div>
+</header>
+
+<footer th:fragment="footer" id="footer" class="footer position-relative">
+    <div class="container copyright text-center mt-4">
+        <p>© <span>Copyright</span> <strong class="px-1 sitename">Halimah</strong><span>All Rights Reserved</span>
+        </p>
+    </div>
+</footer>
+
+<!-- Scroll Top -->
+<a th:href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+
+<!-- Preloader -->
+<div id="preloader"></div>
+
+</body>
+
+</html>
