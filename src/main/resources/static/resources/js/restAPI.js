@@ -27,7 +27,52 @@ const url = 'http://localhost:8081/api/v1';
        dataMyCart();
        submitRemoveProductFromCart();
        inputFormatRupiah();
+       fileInput();
 }())
+
+function fileInput(){
+   document.getElementById('fileInput').addEventListener('change', function (event) {
+       const image = document.getElementById('image');
+       const file = event.target.files[0];
+       const reader = new FileReader();
+
+       reader.onload = function (e) {
+           image.src = e.target.result;
+           image.style.display = 'block';
+
+           const cropper = new Cropper(image, {
+               aspectRatio: 1,
+               viewMode: 1,
+               ready: function () {
+                   const cropBoxData = cropper.getCropBoxData();
+                   const cropBoxWidth = cropBoxData.width;
+                   cropper.setCropBoxData({
+                       left: (cropper.getContainerData().width - cropBoxWidth) / 2,
+                       top: (cropper.getContainerData().height - cropBoxWidth) / 2,
+                       width: cropBoxWidth,
+                       height: cropBoxWidth
+                   });
+               }
+           });
+
+           document.getElementById('cropButton').addEventListener('click', function () {
+               const canvas = cropper.getCroppedCanvas({
+                   width: 300,
+                   height: 300,
+                   imageSmoothingEnabled: true,
+                   imageSmoothingQuality: 'high'
+               });
+
+               document.getElementById('canvas').getContext('2d').drawImage(canvas, 0, 0);
+           });
+       };
+
+       reader.readAsDataURL(file);
+   });
+}
+
+
+
 
 function inputFormatRupiah(){
    var input = document.getElementById('price');
@@ -216,9 +261,9 @@ function submitAddBalance(){
                     method: "PUT",
                     data: JSON.stringify(dto),
                     url: `${url}/profile/${dto.id}`,
-                     headers:{"Content-Type" : "application/json",
+                    headers:{"Content-Type" : "application/json",
                               "Authorization": `Bearer ${localStorage.getItem('token')}`
-                     },
+                    },
                     success: function (response) {
                         localStorage.setItem('successMessage', "Successfully Add Balance")
                         location.reload();

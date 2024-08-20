@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head th:replace="~{layout :: head('Product Upsert')}">
+</head>
+
+<body class="index-page">
+
+<header th:replace="~{layout :: navbar}">
+</header>
+
+<main class="main">
+
+    <section id="services" class="services section">
+
+        <div class="container section-title" data-aos="fade-up">
+            <h2>Update Profile</h2>
+        </div>
+
+        <div class="container d-flex justify-content-center">
+            <div class="row col-lg-5 justify-content-center">
+                <div class="service-item item-pink position-relative">
+                    <div class="col-lg-12 justify-content-center" data-aos="fade-up" data-aos-delay="600">
+                        <div>
+                            <form class="row g-3 needs-validation" th:action="@{/profile/upsert}" method="post" enctype="multipart/form-data"
+                                  th:object="${dto}">
+
+                                <input type="hidden" th:field="*{id}" name="id">
+                                <input type="hidden" th:value="*{account.username}" name="accountId">
+                                <input type="hidden" th:value="${role}" name="role">
+                                <div class="col-12">
+                                    <label for="name" class="form-label">Name </label>
+                                    <input type="text" class="form-control" name="name" id="name" th:value="*{name}">
+                                </div>
+                                <div class="col-12">
+                                    <label for="address" class="form-label">Address</label>
+                                    <textarea class="form-control" style="height: 100px" name="address" id="address" th:text="*{address}"></textarea>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="balance" class="form-label">Balance</label>
+                                    <input type="text" name="balance" class="form-control" id="balance"
+                                           th:field="*{balance}">
+                                </div>
+
+                                <div class="col-12">
+                                    <img th:src="@{'/images/'+ *{photo}}" alt="" width="150">
+                                </div>
+
+                                <div class="col-12">
+                                    <input type="file" id="fileInput">
+                                    <img id="image" style="display:none">
+                                    <button id="cropButton">Crop</button>
+                                    <canvas id="canvas"></canvas>
+                                </div>
+
+                                <div class="col-12">
+                                    <label for="photo" class="form-label">Photo</label>
+                                    <input class="form-control" type="file" accept="image/jpeg, image/png" id="photo" name="photo"  th:field="*{photo}">
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn btn-primary w-100" type="submit">Save</button>
+                                </div>
+
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+<footer th:replace="~{layout :: footer}">
+</footer>
+
+<!-- Scroll Top -->
+<a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+<!-- Preloader -->
+<div id="preloader"></div>
+
+</body>
+
+</html>

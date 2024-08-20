@@ -34,9 +34,8 @@ username: admin
 password: admin123
 .
 .
-untuk nomor port server ini : 8082
+untuk nomor port servernya ini : 8082
 jadi kalau di akses seperti ini:http://localhost:8082
- 
 .
 .
 Semangat belajar ^_^.

@@ -41,6 +41,7 @@ public class CategoryService {
         return new PageImpl<>(dtos, pageable, CategoryPage.getTotalElements());
     }
 
+
     public CategoryUpsertResponseDto save(CategoryUpsertRequestDto dto) {
         var category = Category.builder()
                 .id(dto.getId())

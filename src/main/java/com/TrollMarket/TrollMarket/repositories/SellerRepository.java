@@ -13,4 +13,11 @@ public interface SellerRepository extends JpaRepository<Seller, Integer> {
             WHERE s.account.username LIKE %:username%
             """)
     Seller sellerFindByAccound(@Param("username") String username);
+
+    @Query("""
+            SELECT s
+            FROM Seller s
+            WHERE s.name LIKE %:name%
+            """)
+    Seller sellerFindByName(@Param("name") String name);
 }

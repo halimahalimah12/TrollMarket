@@ -60,7 +60,32 @@
                                     <button type="submit" class="btn btn-primary">Search</button>
                                 </div>
                             </form>
+
+
                         </div>
+                        <div class="row mb-12">
+                            <div class="col-sm-4">
+                                <button type="button" class=" btn btn-outline-primary"><a
+                                        th:href="@{/export-to-excel}">Download Data  </a>
+                                </button>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="col-sm-8" style="align-content:center">
+                                    <form method="post" enctype="multipart/form-data" th:action="@{/excel/upload}">
+                                        <div class="row ">
+                                            <div class="col-10" >
+                                                <input class="form-control" type="file" id="file" name="file" >
+                                            </div>
+                                            <div class="col-sm-2" >
+                                                <button type="submit" class="btn btn-primary">Upload</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+
 
 
                         <h3>History Transaction </h3>

@@ -24,4 +24,6 @@ public class Seller {
     private String address;
     @Column(name = "Balance")
     private Double balance;
+    @Column(name="Photo")
+    private String photo;
 }

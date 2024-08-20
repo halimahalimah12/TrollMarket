@@ -1,23 +1,21 @@
 package com.TrollMarket.TrollMarket.services;
 
+import com.TrollMarket.TrollMarket.ExcelUtility;
 import com.TrollMarket.TrollMarket.dtos.order.OrderRequestDto;
 import com.TrollMarket.TrollMarket.dtos.order.OrderRowDto;
 import com.TrollMarket.TrollMarket.dtos.order.OrderSearchDto;
+import com.TrollMarket.TrollMarket.dtos.order.OrderToDatabaseDto;
 import com.TrollMarket.TrollMarket.dtos.utility.SelectBuyerDto;
 import com.TrollMarket.TrollMarket.dtos.utility.SelectListSellerDto;
-import com.TrollMarket.TrollMarket.models.Buyer;
-import com.TrollMarket.TrollMarket.models.Cart;
-import com.TrollMarket.TrollMarket.models.Order;
-import com.TrollMarket.TrollMarket.models.Seller;
-import com.TrollMarket.TrollMarket.repositories.BuyerRepository;
-import com.TrollMarket.TrollMarket.repositories.CartRepository;
-import com.TrollMarket.TrollMarket.repositories.OrderRepository;
-import com.TrollMarket.TrollMarket.repositories.SellerRepository;
+import com.TrollMarket.TrollMarket.models.*;
+import com.TrollMarket.TrollMarket.repositories.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -28,12 +26,17 @@ public class OrderService {
     private final CartRepository cartRepository;
     private final BuyerRepository buyerRepository;
     private final SellerRepository sellerRepository;
+    private  final ShipmentRepository shipmentRepository;
+    private final  ProductRepository productRepository;
 
-    public OrderService(OrderRepository orderRepository, CartRepository cartRepository, BuyerRepository buyerRepository, SellerRepository sellerRepository) {
+
+    public OrderService(OrderRepository orderRepository, CartRepository cartRepository, BuyerRepository buyerRepository, SellerRepository sellerRepository, ShipmentRepository shipmentRepository, ProductRepository productRepository) {
         this.orderRepository = orderRepository;
         this.cartRepository = cartRepository;
         this.buyerRepository = buyerRepository;
         this.sellerRepository = sellerRepository;
+        this.shipmentRepository = shipmentRepository;
+        this.productRepository = productRepository;
     }
 
     public List<OrderRowDto> getAll(OrderSearchDto dto){
@@ -56,6 +59,25 @@ public class OrderService {
         return orderRowDtos;
 
     }
+
+    public List<OrderRowDto> getAllOrderExcel(){
+        List<Order> orderList = orderRepository.findAll();
+        List<OrderRowDto> orderRowDtos =  orderList.stream().map(
+                        order -> OrderRowDto.builder()
+                                .date(order.getOrderDate())
+                                .seller(order.getProduct().getSeller().getName())
+                                .buyer(order.getBuyer().getName())
+                                .product(order.getProduct().getName())
+                                .quantity(order.getQuantity())
+                                .shipment(order.getShipment().getName())
+                                .shipmentPrice(order.getFreight())
+                                .totalPrice(totalPrice(order.getUnitPrice(),order.getQuantity(),order.getShipment().getPrice()))
+                                .build())
+                .toList();
+        return orderRowDtos;
+
+    }
+
     public Double totalPrice(Double unitPrice, Integer quantity, Double shipmentPrice) {
         return (unitPrice * quantity) + shipmentPrice;
     }
@@ -118,5 +140,31 @@ public class OrderService {
             return "Gagal order karena saldo tidak cukup!";
         }
 
+    }
+
+    public  void  saveDataFromExcel(MultipartFile file){
+        try {
+            List<OrderToDatabaseDto> orderList = ExcelUtility.excelToList(file.getInputStream());
+            orderRepository.deleteAll();
+
+            for (var order : orderList){
+                Buyer buyer = buyerRepository.buyerFindByName(order.getBuyer());
+                Product product = productRepository.findProductByName(order.getProduct());
+                Shipment shipment = shipmentRepository.shipmentFindByName(order.getShipment());
+
+                Order order1 = Order.builder()
+                        .orderDate(order.getDate())
+                        .buyer(buyer)
+                        .product(product)
+                        .shipment(shipment)
+                        .quantity(order.getQuantity())
+                        .unitPrice(order.getUnitPrice())
+                        .freight(order.getFreight())
+                        .build();
+                orderRepository.save(order1);
+            }
+        }catch (IOException ex){
+            throw  new RuntimeException("Excel data is failde to store:" + ex.getMessage());
+        }
     }
 }

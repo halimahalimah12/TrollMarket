@@ -14,5 +14,6 @@ public class OrderRowDto {
     private final String product;
     private final Integer quantity;
     private final String shipment;
+    private final Double shipmentPrice;
     private final Double totalPrice;
 }

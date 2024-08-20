@@ -39,4 +39,11 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
                                  @Param("nameProduct") String nameProduct,
                                  @Param("categoryId") Integer categoryId,
                                  @Param("description") String description);
+
+    @Query("""
+            SELECT p
+            FROM Product p
+            WHERE p.name LIKE %:name%
+            """)
+    Product findProductByName(@Param("name") String name);
 }
